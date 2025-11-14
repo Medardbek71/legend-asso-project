@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{-- {{{ await $slots.meta() }}} --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>
+      {{{ await $slots.title() || "page d'acceuil" }}}
+    </title>
+  </head>
+
+  <body class=" flex justify-center items-center flex-col">
+    @include('component/header')
+    <main class="w-10/12">
+      {{{ await $slots.main() }}}
+    </main>
+    @include('component/footer')
+  </body>
+</html>

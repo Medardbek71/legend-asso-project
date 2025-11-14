@@ -1,39 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>
-      Document
-    </title>
-  </head>
-  <body class=" flex justify-center items-center">
-    <header
-      class="m-5 rounded-4xl border border-[#000000] inline-flex justify-between p-5  w-10/12 flex-row items-center  lg:p-5 h-15 "
-    >
-      <div class="inline-flex w-1/2">
-        <div class="w-2/12">
-          <a href="#">
-            <img src="/images/Lecacy-market.png" alt="legacy-market" />
-          </a>
-        </div>
-        <nav class="hidden lg:inline-flex gap-10 ml-20 text-base justify-center w-10/12">
-          <a href="#">catalogue</a>
-          <a href="#">créateurs locaux</a>
-          <a href="#">blog</a>
-        </nav>
+@component('component/layouts/app')
+  @slot('title')
+    Acceuil
+  @endslot
+  
+  @slot('main')
+    @include('component/category-section')
+    Ajoutés recemment
+    @include('component/card-section')
+    <div class="my-3">
+      Top references
+      @include('component/card-section')
+    </div>
+    <section class="my-10">
+      <h1 class="my-5">
+        Devenez producteurs partenaires
+      </h1>
+      <p class="text-align-justify">
+        Mettez vos produits en ligne et touchez un public national et international.
+Nous vous accompagnons dans chaque étape pour valoriser vos produits et booster vos ventes.
+      </p>
+      <ol class="list-decimal">
+        <li>
+          Devenez producteur partenaire
+        </li>
+        <li>
+          Ajouter un produit
+        </li>
+        <li>
+          Commencer a vendre
+        </li>
+      </ol>
+    </section>
+    <section class="my-10">
+      <h1 class="my-5">
+        Devenez producteurs partenaires
+      </h1>
+      <p class="text-align-justify">
+        Rejoingnez le mouvement du made in cameroon dès aujourd'hui
+      </p>
+      <div class="flex justify-center items-center my-10">
 
+        <button class="bg-red-500 rounded-3xl text-white text-xs p-3 justify-center items-center mx-4">Commencer a vendre </button>
+        <button
+          class="rounded-3xl text-red text-xs p-3 justify-center items-center w-auto border-[#CE0000] border mx-4"
+        >Commencer a vendre </button>
       </div>
-
-      <div class="hidden lg:inline-flex gap-7 w-2/12">
-        <div>
-          Inscription
-        </div>
-        <div class="btn-primary">
-          Connexion
-        </div>
-
-      </div>
-    </header>
-  </html>
+    </section>
+  @endslot
+@endcomponent
