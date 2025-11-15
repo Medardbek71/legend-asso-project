@@ -9,4 +9,20 @@
 
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/home')
+router
+  .get('/', (ctx) => {
+    return ctx.view.render('pages/home')
+  })
+  .as('home')
+
+router
+  .get('catalogue', (ctx) => {
+    return ctx.view.render('pages/catalogue')
+  })
+  .as('catalogue')
+
+router
+  .get('suppliers', (ctx) => {
+    return ctx.view.render('pages/suppliers')
+  })
+  .as('suppliers')

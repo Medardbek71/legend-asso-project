@@ -1,8 +1,8 @@
 <header
-  class="bg-[#171B99] inline-flex w-12/12 flex-row justify-between items-center lg: h-15 fixed top-0"
+  class="bg-[#171B99] inline-flex w-12/12 flex-row justify-between items-center lg: h-20 fixed top-0"
 >
   <div class="yellow-500 w-1/12 flex h-full justify-center items-center">
-    <a href="#">
+    <a href="{{ route('home') }}">
       <img src="/images/icon.png" alt="legacy-market" class="p-2 size-15 mx-5 align-self-center" />
     </a>
   </div>
@@ -26,8 +26,8 @@
 
   <div class="inline-flex w-2/12 items-center lg:w-8/12 mx-5 justify-between">
     <nav class="hidden lg:flex gap-4 text-base justify-around items-center text-white w-5/12">
-      <a href="#" class="gap-2 text-xs">catalogue</a>
-      <a href="#" class="gap-2 text-xs">créateurs locaux</a>
+      <a href="{{ route('catalogue') }}" class="gap-2 text-xs">catalogue</a>
+      <a href="{{ route('suppliers') }}" class="gap-2 text-xs">créateurs locaux</a>
       <a href="#" class="gap-2 text-xs">blog</a>
     </nav>
 

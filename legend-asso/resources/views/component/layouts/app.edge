@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.ico" />
     {{-- {{{ await $slots.meta() }}} --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>
@@ -12,7 +13,7 @@
 
   <body class=" flex justify-center items-center flex-col">
     @include('component/header')
-    <main class="w-10/12">
+    <main class="w-10/12 mt-20">
       {{{ await $slots.main() }}}
     </main>
     @include('component/footer')

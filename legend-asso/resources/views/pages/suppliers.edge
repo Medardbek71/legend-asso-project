@@ -1,0 +1,9 @@
+@component('component/layouts/app')
+  @slot('title')
+    suppliers
+  @endslot
+  
+  @slot('main')
+    @include('component/supplier-card')
+  @end
+@endcomponent

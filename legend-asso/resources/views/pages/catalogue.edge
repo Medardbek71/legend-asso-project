@@ -1,0 +1,10 @@
+@component('component/layouts/app')
+
+  @slot('title')
+    catalogue
+  @end
+  @slot('main')
+    @include('component/category-section')
+    @include('component/card-section')
+  @endslot
+@end

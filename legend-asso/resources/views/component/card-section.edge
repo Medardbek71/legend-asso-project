@@ -1,23 +1,18 @@
-<script>
-  // 1. Définir la fonction à exécuter au clic
-  function handleAddToCart() {
-    alert("Produit ajouté au panier !"); // Correction de l'alerte pour une meilleure clarté
-    // Ici, vous ajouteriez la vraie logique d'ajout au panier (par exemple, un appel API ou la mise à jour d'un état)
-  }
-  // 2. Cibler l'élément après que le DOM soit complètement chargé
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const cartButton = document.getElementById("add-to-cart-button");
-    if (cartButton) {
-      // 3. Attacher le gestionnaire d'événements
-      cartButton.addEventListener("click", handleAddToCart);
-    }
-  });
-</script>
-
 <section class="inline-flex w-full flex-wrap">
   @include('component/card')
   @include('component/card')
   @include('component/card')
- </section>
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+  @include('component/card')
+</section>
 
