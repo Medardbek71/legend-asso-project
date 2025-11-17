@@ -9,13 +9,196 @@
     <title>
       {{{ await $slots.title() || "page d'acceuil" }}}
     </title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+      
+      @import url('https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100..900;1,100..900&family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap');
+      
+      body {
+        font-family: 'Epilogue', sans-serif;
+        background-color: #F7F7F7;
+      }
+      
+      /* Styles pour le Modal Menu (Sidebar) */
+      
+      .modal-overlay {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0.3s;
+      }
+      
+      .modal-overlay.open {
+        visibility: visible;
+        opacity: 1;
+      }
+      
+      /* Le menu slide de gauche à droite */
+      
+      .modal-menu {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-out;
+      }
+      
+      .modal-menu.open {
+        transform: translateX(0);
+      }
+      
+      /* Assurer que le header fixed prend 100% de la largeur du viewport */
+      
+      .full-width-header {
+        width: 100vw;
+        left: 0;
+        right: 0;
+      }
+    </style>
   </head>
 
-  <body class=" flex justify-center items-center flex-col">
+  <body class=" flex justify-center items-center flex-col bg-[#F7F7F7]">
     @include('component/header')
-    <main class="w-10/12 mt-20">
+    <main class="w-10/12 mt-30">
       {{{ await $slots.main() }}}
     </main>
     @include('component/footer')
+
+    <!-- ---------------------------------------------------- -->
+    <!-- MODAL DE MENU (Sidebar) - Conserve la logique responsive -->
+    <!-- ---------------------------------------------------- -->
+
+    <!-- Overlay (Le fond sombre et cliquable) -->
+    <div
+      id="modal-overlay"
+      class="modal-overlay fixed inset-0 z-40 bg-white sm:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+
+      <!-- Menu Modale (Le contenu du menu qui glisse) -->
+      <div
+        id="modal-menu"
+        class="modal-menu fixed top-0 left-0 h-full w-64 bg-white shadow-xl flex flex-col z-50"
+      >
+        <!-- Tête de la Modale (Titre et Bouton Fermer) -->
+        <div class="p-4 flex justify-between items-center border-b border-gray-100">
+          <img src="/images/icon.png" alt="icon" class="flex size-8 self-center" />
+          <button
+            id="close-button"
+            class="p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+            aria-label="Fermer le menu"
+          >
+            <!-- Icône X -->
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Liens de Navigation -->
+        <nav class="flex flex-col p-4 space-y-2">
+          <a
+            href="{{ route('home') }}"
+            class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition"
+          >Accueil</a>
+          <a
+            href="{{ route('catalogue') }}"
+            class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition"
+          >Catalogue</a>
+          <a
+            href="{{ route('suppliers') }}"
+            class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition"
+          >Créateurs Locaux</a>
+          <a
+            href="#"
+            class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition"
+          >Blog</a>
+          <a
+            href="#"
+            class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition"
+          >Panier</a>
+
+          <!-- Boutons d'Authentification (Mobile) -->
+          <div class="pt-4 border-t mt-4 space-y-2">
+            <button
+              class="w-full text-sm py-2 rounded-xl text-white bg-[#CE0000] hover:bg-opacity-80 font-semibold transition"
+            >
+              Connexion
+                    </button>
+            <button
+              class="w-full text-sm py-2 rounded-xl text-[#171B99] border border-[#171B99] hover:bg-gray-100 transition"
+            >
+              Créer un compte
+                    </button>
+          </div>
+        </nav>
+      </div>
+
+    </div>
+    <script>
+      // Références mises à jour
+      const burgerButton = document.getElementById("burger-button");
+
+      const closeButton = document.getElementById("close-button");
+
+      const modalOverlay = document.getElementById("modal-overlay");
+
+      const modalMenu = document.getElementById("modal-menu");
+      /**
+                                                                                                                                                                                                                   * Fonction pour ouvrir la modale (menu)
+                                                                                                                                                                                                                   */
+
+      function openModal() {
+        modalOverlay.classList.add("open");
+        modalMenu.classList.add("open");
+        // Geler le défilement du corps de la page
+        document.body.style.overflow = "hidden";
+        // Rendre le bouton de fermeture prioritaire pour l'accessibilité
+        closeButton.focus();
+      }
+      /**
+                                                                                                                                                                                                                   * Fonction pour fermer la modale (menu)
+                                                                                                                                                                                                                   */
+
+      function closeModal() {
+        modalOverlay.classList.remove("open");
+        modalMenu.classList.remove("open");
+        // Rétablir le défilement
+        document.body.style.overflow = "";
+        // Rendre le focus au bouton burger
+        burgerButton.focus();
+      }
+      // 1. Ouvre la modale quand on clique sur le bouton burger
+
+      if (burgerButton) {
+        burgerButton.addEventListener("click", openModal);
+      }
+      // 2. Ferme la modale quand on clique sur le bouton "X"
+
+      if (closeButton) {
+        closeButton.addEventListener("click", closeModal);
+      }
+      // 3. Ferme la modale quand on clique sur l'overlay (en dehors du menu)
+
+      if (modalOverlay) {
+        modalOverlay.addEventListener("click", function(event) {
+          // Vérifie si l'élément cliqué est bien l'overlay lui-même (et non un enfant du menu)
+          if (event.target === modalOverlay) {
+            closeModal();
+          }
+        });
+      }
+      // 4. Ferme la modale en appuyant sur la touche ESC
+
+      document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && modalOverlay && modalOverlay.classList.contains("open")) {
+          closeModal();
+        }
+      });
+    </script>
   </body>
 </html>

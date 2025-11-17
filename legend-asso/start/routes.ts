@@ -23,6 +23,12 @@ router
 
 router
   .get('suppliers', (ctx) => {
-    return ctx.view.render('pages/suppliers')
+    return ctx.view.render('pages/suppliers/index')
   })
   .as('suppliers')
+
+router
+  .get('suppliers/name', (ctx) => {
+    return ctx.view.render('pages/suppliers/name')
+  })
+  .as('name')

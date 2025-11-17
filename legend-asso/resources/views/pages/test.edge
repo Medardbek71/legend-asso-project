@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Modal de Navigation et Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        /* Styles pour le Modal Menu (Sidebar) */
+        .modal-overlay {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.open {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Le menu slide de gauche à droite */
+        .modal-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-out;
+        }
+        .modal-menu.open {
+            transform: translateX(0);
+        }
+        /* Assurer que le header prend 100% de la largeur du viewport */
+        .full-width-header {
+            width: 100vw; 
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header de la Page (Zone de navigation principale) -->
+    <!-- J'ai ajouté 'full-width-header' pour corriger la taille du fixed top-0 -->
+    <header
+        class="bg-[#171B99] inline-flex w-12/12 full-width-header flex-row justify-between items-center lg:h-20 fixed top-0 z-30" 
+    >
+        <!-- Logo -->
+        <div class="w-1/12 flex h-full justify-center items-center">
+            <a href="{{ route('home') }}">
+                <!-- J'ai ajusté la taille pour éviter les conflits de classes -->
+                <img src="/images/icon.png" alt="legacy-market" class="size-10 mx-5" /> 
+            </a>
+        </div>
+
+        <!-- Barre de Recherche (Desktop) -->
+        <div class="hidden lg:inline-flex items-center rounded-3xl bg-white w-4/12">
+            <form
+                action=""
+                method="get"
+                class="flex items-center rounded-3xl justify-between w-full h-10"
+            >
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Rechercher des produits, des créateurs..."
+                    class="rounded-l-3xl w-10/12 pl-3 ml-3 border-none outline-none"
+                />
+                <!-- J'ai corrigé l'alignement du bouton de recherche -->
+                <button type="submit" class="bg-[#CE0000] rounded-r-3xl mx-0 w-1/12 h-full flex items-center justify-center">
+                    <!-- Utiliser l'icône de recherche directement pour ne pas dépendre d'une image locale -->
+                    <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- Menu/Panier/Auth (Droite) -->
+        <div class="inline-flex w-7/12 sm:w-6/12 lg:w-4/12 items-center mx-5 justify-end">
+            
+            <!-- Liens de Navigation (Desktop) -->
+            <nav class="hidden lg:flex gap-4 text-base justify-around items-center text-white w-6/12">
+                <a href="{{ route('catalogue') }}" class="text-xs hover:text-[#CE0000] transition">Catalogue</a>
+                <a href="{{ route('suppliers') }}" class="text-xs hover:text-[#CE0000] transition">Créateurs</a>
+                <a href="#" class="text-xs hover:text-[#CE0000] transition">Blog</a>
+            </nav>
+
+            <!-- Boutons Auth (Desktop) -->
+            <div class="hidden lg:inline-flex gap-2 w-4/12 ml-6">
+                <button class=" text-white border border-white text-xs w-1/2 py-2 rounded-xl hover:bg-white hover:text-[#171B99] transition">
+                    Créer un compte
+                </button>
+                <button class="bg-[#CE0000] text-white text-xs w-1/2 py-2 rounded-xl hover:bg-opacity-80 transition">
+                    Connexion
+                </button>
+            </div>
+            
+            <!-- Panier (Cart) -->
+            <div class="w-1/5 lg:w-auto ml-4 h-1/2 flex justify-center items-center">
+                <a href="#" class="relative p-2">
+                    <img src="/images/shopping-bag.png" alt="cart" class="size-6 sm:size-7 filter invert" />
+                    <!-- Compteur de panier (ex: 2) -->
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-[#CE0000] rounded-full">2</span>
+                </a>
+            </div>
+            
+            <!-- Bouton Burger (Mobile) -->
+            <div class="w-1/3 lg:hidden flex justify-end">
+                <!-- IMPORTANT : Ajout de l'ID 'burger-button' pour le JS -->
+                <button id="burger-button" class="p-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition" aria-label="Ouvrir le menu">
+                    <!-- J'utilise une icône SVG standard pour la fiabilité, mais l'image locale est conservée si elle existe -->
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Espace de remplissage pour le header fixed -->
+    <div class="h-20"></div>
+
+    <!-- Contenu Principal -->
+    <main class="p-8 max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800">Bienvenue sur la plateforme d'Export Local</h1>
+        <p class="mt-4 text-gray-600">
+            Le menu latéral s'ouvre au clic sur le burger et se ferme au clic à l'extérieur ou sur le bouton "X".
+        </p>
+    </main>
+
+
+    <!-- ---------------------------------------------------- -->
+    <!-- MODAL DE MENU (Sidebar) - Doit être en dehors du Header -->
+    <!-- ---------------------------------------------------- -->
+    
+    <!-- Overlay (Le fond sombre et cliquable) -->
+    <div id="modal-overlay" class="modal-overlay fixed inset-0 z-40 bg-black bg-opacity-50 sm:hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        
+        <!-- Menu Modale (Le contenu du menu qui glisse) -->
+        <div id="modal-menu" class="modal-menu fixed top-0 left-0 h-full w-64 bg-white shadow-xl flex flex-col z-50">
+            
+            <!-- Tête de la Modale (Titre et Bouton Fermer) -->
+            <div class="p-4 flex justify-between items-center border-b border-gray-100">
+                <h2 id="modal-title" class="text-xl font-bold text-[#171B99]">Navigation</h2>
+                <button id="close-button" class="p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition" aria-label="Fermer le menu">
+                    <!-- Icône X -->
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Liens de Navigation -->
+            <nav class="flex flex-col p-4 space-y-2">
+                <a href="{{ route('home') }}" class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition">Accueil</a>
+                <a href="{{ route('catalogue') }}" class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition">Catalogue</a>
+                <a href="{{ route('suppliers') }}" class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition">Créateurs Locaux</a>
+                <a href="#" class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition">Blog</a>
+                <a href="#" class="block p-3 rounded-lg text-gray-700 hover:bg-[#F0F0F0] hover:text-[#CE0000] font-medium transition">Panier</a>
+                
+                <!-- Boutons d'Authentification (Mobile) -->
+                <div class="pt-4 border-t mt-4 space-y-2">
+                    <button class="w-full text-sm py-2 rounded-xl text-white bg-[#CE0000] hover:bg-opacity-90 font-semibold transition">
+                        Connexion
+                    </button>
+                    <button class="w-full text-sm py-2 rounded-xl text-[#171B99] border border-[#171B99] hover:bg-gray-100 transition">
+                        Créer un compte
+                    </button>
+                </div>
+            </nav>
+        </div>
+        
+    </div>
+    <!-- ---------------------------------------------------- -->
+    <!-- FIN MODAL -->
+    <!-- ---------------------------------------------------- -->
+
+    <script>
+        // Références mises à jour
+        const burgerButton = document.getElementById('burger-button');
+        const closeButton = document.getElementById('close-button');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalMenu = document.getElementById('modal-menu');
+
+        /**
+         * Fonction pour ouvrir la modale (menu)
+         */
+        function openModal() {
+            modalOverlay.classList.add('open');
+            modalMenu.classList.add('open');
+            // Geler le défilement du corps de la page
+            document.body.style.overflow = 'hidden';
+            // Rendre le bouton de fermeture prioritaire pour l'accessibilité
+            closeButton.focus();
+        }
+
+        /**
+         * Fonction pour fermer la modale (menu)
+         */
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+            modalMenu.classList.remove('open');
+            // Rétablir le défilement
+            document.body.style.overflow = '';
+            // Rendre le focus au bouton burger
+            burgerButton.focus();
+        }
+
+        // 1. Ouvre la modale quand on clique sur le bouton burger
+        if (burgerButton) {
+            burgerButton.addEventListener('click', openModal);
+        }
+        
+        // 2. Ferme la modale quand on clique sur le bouton "X"
+        if (closeButton) {
+            closeButton.addEventListener('click', closeModal);
+        }
+
+        // 3. Ferme la modale quand on clique sur l'overlay (en dehors du menu)
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', function(event) {
+                // Vérifie si l'élément cliqué est bien l'overlay lui-même (et non un enfant du menu)
+                if (event.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+        }
+
+        // 4. Ferme la modale en appuyant sur la touche ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('open')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
